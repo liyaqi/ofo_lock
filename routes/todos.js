@@ -8,11 +8,20 @@ var Todo = AV.Object.extend('Todo');
 router.get('/', function(req, res, next) {
   var query = new AV.Query(Todo);
   query.descending('createdAt');
+ // console.log(req.currentUser)
   query.find().then(function(results) {
+	if(req.currentUser){ 
     res.render('todos', {
       title: 'TODO 列表',
       todos: results
     });
+	 }
+	 else
+	 {
+		 console.log("need login");
+		 res.render('login');
+	 }
+	 
   }, function(err) {
     if (err.code === 101) {
       // 该错误的信息为：{ code: 101, message: 'Class or object doesn\'t exists.' }，说明 Todo 数据表还未创建，所以返回空的 Todo 列表。
