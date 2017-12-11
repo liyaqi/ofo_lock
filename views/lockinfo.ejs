@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Lockinfo</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <form action="/lockinfo" method="POST">
+	  SN ：
+      <input type="text" name="sn" />
+	  CarNo :
+	  <input type="text" name="carno" />
+      <input type="submit" value="查找" />
+    </form>
+	<ul>
+      <% for(var i=0; i<lockinfo.length; i++) {%>
+      <li>carno : <%= lockinfo[i].get('carno') %></li>
+	  <li>sn : <%= lockinfo[i].get('sn') %></li>
+	  <li>creattime : <%= lockinfo[i].get('creattime') %></li>
+      <% } %>
+    </ul>
+  </body>
+</html>
