@@ -6,7 +6,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var AV = require('leanengine');
-
+var fs=require("fs");
 // 加载云函数定义，你可以将云函数拆分到多个文件方便管理，但需要在主文件中加载它们
 require('./cloud');
 
@@ -43,6 +43,12 @@ app.use('/todos', require('./routes/todos'));
 app.use('/login', require('./routes/login'));
 app.use('/lockinfo', require('./routes/lockinfo'));
 app.use('/addlock', require('./routes/addlock'));
+
+app.use('/music/:filename',function(req,res,next){
+	
+	var path = 'http://ac-vfqnoybk.clouddn.com/e3fdd6025072a65cbcb0.mp3';
+	res.download(path);
+});
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
   if (!res.headersSent) {
