@@ -46,8 +46,8 @@ app.use('/addlock', require('./routes/addlock'));
 
 app.use('/music/:filename',function(req,res,next){
 	
-	var path = 'http://ac-vfqnoybk.clouddn.com/e3fdd6025072a65cbcb0.mp3';
-	res.download(path);
+	 var url = 'public/res/open.mp3' ;
+	 res.download(url);
 });
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
