@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var AV = require('leanengine');
 var fs=require("fs");
+var crypto = require('crypto');
 // 加载云函数定义，你可以将云函数拆分到多个文件方便管理，但需要在主文件中加载它们
 require('./cloud');
 
@@ -32,9 +33,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(AV.Cloud.CookieSession({ secret: '<put random string here>', maxAge: 3000000, fetchUser: true }));
-app.get('/', function(req, res) {
-  res.render('index', { currentTime: new Date() });
-});
+// app.get('/', function(req, res) {
+  // res.render('index', { currentTime: new Date() });
+// });
 // app.get('/login', function(req, res) {
   // res.render('login', { title: 'Login' });
 // });
@@ -44,9 +45,24 @@ app.use('/login', require('./routes/login'));
 app.use('/lockinfo', require('./routes/lockinfo'));
 app.use('/addlock', require('./routes/addlock'));
 
-app.use('/music/:filename',function(req,res,next){
+app.use('/',function(req,res,next){
 	
-	 var url = 'public/res/open.mp3' ;
+	 var url = 'public/res/open.mp3';
+	 var hash  = crypto.createHash('md5');
+	 var data=fs.readFileSync(url);  
+	 hash.update(data);
+	 // var rs = fs.createReadStream(url);
+     // rs.on('data', function(chunk) {
+        // hash.update(chunk);
+    // });
+	var md5 = hash.digest('base64');
+	console.log(md5);
+	res.setHeader("Content-MD5",md5);
+	res.setHeader("Content-type","audio/mp3");
+	 // res.writeHead(200,"成功！",{
+		 // "Content-Md5":md5,
+         // "Content-type":"audio/mp3"
+     // });
 	 res.download(url);
 });
 app.use(function(req, res, next) {
