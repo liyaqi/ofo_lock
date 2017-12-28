@@ -53,16 +53,17 @@ app.use('/',function(req,res,next){
 	 var hash  = crypto.createHash('md5');
 	 var data=fs.readFileSync(url);  
 	 hash.update(data);
-	 var etag = md5(data);
+	 var etag = md5(data).toUpperCase();
+	 var etag_str ="\""+etag+"\"";
 	 // var rs = fs.createReadStream(url);
      // rs.on('data', function(chunk) {
         // hash.update(chunk);
     // });
 	var md5_str = hash.digest('base64');
-	console.log(md5);
+	console.log(md5_str);
 	res.setHeader("Content-MD5",md5_str);
 	res.setHeader("Content-type","audio/mp3");
-	res.setHeader('Etag',etag);
+	res.setHeader('Etag',etag_str);
 	 // res.writeHead(200,"成功！",{
 		 // "Content-Md5":md5,
          // "Content-type":"audio/mp3"
