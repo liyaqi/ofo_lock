@@ -63,7 +63,7 @@ app.use('/',function(req,res,next){
 	console.log(md5_str);
 	res.setHeader("Content-MD5",md5_str);
 	res.setHeader("Content-type","audio/mp3");
-	res.setHeader('Etag',etag_str);
+	res.setHeader('ETag',etag_str);
 	 // res.writeHead(200,"成功！",{
 		 // "Content-Md5":md5,
          // "Content-type":"audio/mp3"
