@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var AV = require('leanengine');
 var fs=require("fs");
 var crypto = require('crypto');
+var md5 = require('md5');
 // 加载云函数定义，你可以将云函数拆分到多个文件方便管理，但需要在主文件中加载它们
 require('./cloud');
 
@@ -17,8 +18,9 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(express.static('public'));
 
+app.use(express.static('public'));
+app.set('etag','strong');
 // 设置默认超时时间
 app.use(timeout('15s'));
 
@@ -51,14 +53,16 @@ app.use('/',function(req,res,next){
 	 var hash  = crypto.createHash('md5');
 	 var data=fs.readFileSync(url);  
 	 hash.update(data);
+	 var etag = md5(data);
 	 // var rs = fs.createReadStream(url);
      // rs.on('data', function(chunk) {
         // hash.update(chunk);
     // });
-	var md5 = hash.digest('base64');
+	var md5_str = hash.digest('base64');
 	console.log(md5);
-	res.setHeader("Content-MD5",md5);
+	res.setHeader("Content-MD5",md5_str);
 	res.setHeader("Content-type","audio/mp3");
+	res.setHeader('Etag',etag);
 	 // res.writeHead(200,"成功！",{
 		 // "Content-Md5":md5,
          // "Content-type":"audio/mp3"
