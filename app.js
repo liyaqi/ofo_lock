@@ -29,7 +29,7 @@ app.use(AV.express());
 
 app.enable('trust proxy');
 // 需要重定向到 HTTPS 可去除下一行的注释。
-// app.use(AV.Cloud.HttpsRedirect());
+ app.use(AV.Cloud.HttpsRedirect());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -49,26 +49,27 @@ app.use('/addlock', require('./routes/addlock'));
 app.use('/xiaochengxu', require('./routes/xiaochengxu'));
 app.use('/',function(req,res,next){
 	
-	 var url = 'public/res/open.mp3';
-	 var hash  = crypto.createHash('md5');
-	 var data=fs.readFileSync(url);  
-	 hash.update(data);
-	 var etag = md5(data).toUpperCase();
-	 var etag_str ="\""+etag+"\"";
+	res.send('hello')
+	 // var url = 'public/res/open.mp3';
+	 // var hash  = crypto.createHash('md5');
+	 // var data=fs.readFileSync(url);  
+	 // hash.update(data);
+	 // var etag = md5(data).toUpperCase();
+	 // var etag_str ="\""+etag+"\"";
 	 // var rs = fs.createReadStream(url);
      // rs.on('data', function(chunk) {
         // hash.update(chunk);
     // });
-	var md5_str = hash.digest('base64');
-	console.log(md5_str);
-	res.setHeader("Content-MD5",md5_str);
-	res.setHeader("Content-type","audio/mp3");
-	res.setHeader('ETag',etag_str);
+	// var md5_str = hash.digest('base64');
+	// console.log(md5_str);
+	// res.setHeader("Content-MD5",md5_str);
+	// res.setHeader("Content-type","audio/mp3");
+	// res.setHeader('ETag',etag_str);
 	 // res.writeHead(200,"成功！",{
 		 // "Content-Md5":md5,
          // "Content-type":"audio/mp3"
      // });
-	 res.download(url);
+	 // res.download(url);
 });
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
