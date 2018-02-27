@@ -46,7 +46,7 @@ app.use('/todos', require('./routes/todos'));
 app.use('/login', require('./routes/login'));
 app.use('/lockinfo', require('./routes/lockinfo'));
 app.use('/addlock', require('./routes/addlock'));
-
+app.use('/xiaochengxu', require('./routes/xiaochengxu'));
 app.use('/',function(req,res,next){
 	
 	 var url = 'public/res/open.mp3';
